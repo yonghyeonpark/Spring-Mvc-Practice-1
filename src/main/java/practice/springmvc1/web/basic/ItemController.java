@@ -3,9 +3,8 @@ package practice.springmvc1.web.basic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import practice.springmvc1.domain.item.Item;
 import practice.springmvc1.domain.item.ItemRepository;
 
@@ -30,5 +29,18 @@ public class ItemController {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "basic/item";
+    }
+
+    @GetMapping("/add")
+    public String addForm() {
+        return "basic/addForm";
+    }
+
+    @PostMapping("/add")
+    public String addForm(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true); // 치환되지 않는 속성은 쿼리파라미터로 넘어감
+        return "redirect:/basic/items/{itemId}";
     }
 }
