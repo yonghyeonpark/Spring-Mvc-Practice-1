@@ -43,4 +43,17 @@ public class ItemController {
         redirectAttributes.addAttribute("status", true); // 치환되지 않는 속성은 쿼리파라미터로 넘어감
         return "redirect:/basic/items/{itemId}";
     }
+
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model) {
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item", item);
+        return "basic/editForm";
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String update(@PathVariable Long itemId, @ModelAttribute Item item) {
+        itemRepository.update(itemId, item);
+        return "redirect:/basic/items/{itemId}";
+    }
 }
