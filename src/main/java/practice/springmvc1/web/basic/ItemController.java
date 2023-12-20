@@ -37,7 +37,7 @@ public class ItemController {
     }
 
     @PostMapping("/add")
-    public String addForm(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
+    public String save(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true); // 치환되지 않는 속성은 쿼리파라미터로 넘어감
